@@ -5,6 +5,7 @@ import Form from './Form/Form.jsx';
 import Exercise from './Exercise/Exercise';
 import List from './List/List';
 import Logout from './Logout/Logout';
+import { LineChart } from 'react-d3';
 // import AjaxFunctions from '../helpers/AjaxFunctions';
 import './App.css';
 
@@ -15,15 +16,47 @@ export default class App extends Component {
     this.state = {
       holderWt: 'my weight',
       weight: 'my weight',
-      exercises: [
-        { name: 'yolo', description: 'hey hey hey' },
-        { name: 'what-up', description: 'is this working' },
-      ],
+      exercises: {
+        'back': [{ name: 'yolo', description: 'hey hey hey' }, { name: 'what-up', description: 'is this working' }],
+        'chest': [{ name: 'yolo', description: 'hey hey hey' }, { name: 'what-up', description: 'is this working' }],
+      },
       lists: [
         { name: 'back' },
         { name: 'chest' },
+        { name: 'shoulder' },
+        { name: 'bi' },
+        { name: 'tri' },
+        { name: 'leg' },
+        { name: 'ab' },
       ],
+      type: 'default default default',
       date: '',
+      lineData: [
+        {
+          name: 'series1',
+          values: [ { x: 0, y: 20 }, { x: 1, y: 30 }, { x: 2, y: 10 }, { x: 3, y: 5 }, { x: 4, y: 8 }, { x: 5, y: 15 }, { x: 6, y: 10 } ],
+          strokeWidth: 3,
+          strokeDashArray: "5,5",
+          shapeColor: "red",
+        },
+        {
+          name: 'series2',
+          stroke: '#FFFFFF',
+          values : [ { x: 0, y: 8 }, { x: 1, y: 5 }, { x: 2, y: 20 }, { x: 3, y: 12 }, { x: 4, y: 4 }, { x: 5, y: 6 }, { x: 6, y: 2 } ],
+        },
+        {
+          name: 'series3',
+          values: [ { x: 0, y: 0 }, { x: 1, y: 5 }, { x: 2, y: 8 }, { x: 3, y: 2 }, { x: 4, y: 6 }, { x: 5, y: 4 }, { x: 6, y: 2 } ],
+        },
+        {
+          name: 'series4',
+          values: [ { x: 0, y: 0 }, { x: 1, y: 3 }, { x: 2, y: 12 }, { x: 3, y: 3 }, { x: 4, y: 4 }, { x: 5, y: 7 }, { x: 6, y: 6 } ],
+        },
+        {
+          name: 'series5',
+          values: [ { x: 0, y: 3 }, { x: 1, y: 4 }, { x: 2, y: 5 }, { x: 3, y: 6 }, { x: 4, y: 7 }, { x: 5, y: 8 }, { x: 6, y: 9 }, { x: 7, y: 3 }, { x: 8, y: 4 }, { x: 9, y: 5 }, { x: 10, y: 6 }, { x: 11, y: 7 }, { x: 12, y: 8 }, { x: 13, y: 9 } ],
+        },
+      ],
     };
   }
   componentDidMount() {
@@ -45,6 +78,13 @@ export default class App extends Component {
     });
   }
 
+  setType(e) {
+    console.log('SETTING THE FUCK OUT OF THIS ' + e.target.value)
+    this.setState({
+      type: e.target.value,
+    });
+  }
+
   updateWt(e) {
     this.setState({
       holderWt: e.target.value,
@@ -55,6 +95,9 @@ export default class App extends Component {
     this.setState({
       weight: this.state.holderWt,
     });
+  }
+  check() {
+    console.log(this.state.type)
   }
 
   render() {
@@ -76,13 +119,30 @@ export default class App extends Component {
         />
         <List
           lists={this.state.lists}
+          setType={(e) => this.setType(e)}
         />
         <Exercise
           exercises={this.state.exercises}
-          // editCanvas={(id) => this.editCanvas(id)}
-          // deleteCanvas={(id) => this.deleteCanvas(id)}
         />
+        <LineChart
+          legend={true}
+          data={this.state.lineData}
+          width={500}
+          height={400}
+          viewBoxObject={{
+            x: 0,
+            y: 0,
+            width: 500,
+            height: 400,
+          }}
+          title="Line Chart"
+          yAxisLabel="Altitude"
+          xAxisLabel="Elapsed Time (sec)"
+          gridHorizontal={true}
+        />
+        <button onClick={this.check.bind(this)}>click me</button>
       </div>
     );
   }
 }
+
