@@ -10,8 +10,9 @@ export default class Exercise extends Component {
           key={ind}
           name={this.props.exercises[exID].name}
           desc={this.props.exercises[exID].description}
-          // editCanvas={() => this.props.editCanvas(this.props.drawings[canvID].id)}
-          // deleteCanvas={() => this.props.deleteCanvas(this.props.drawings[canvID].id)}
+          img1={this.props.exercises[exID].image1}
+          id={this.props.exercises[exID].id}
+          saveExercise={this.props.saveExercise}
         />
     ));
     return (

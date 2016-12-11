@@ -14,47 +14,62 @@ export default class App extends Component {
     super();
 
     this.state = {
-      holderWt: 'my weight',
-      weight: 'my weight',
+      placeWt: 'my weight',
+      holderWt: '',
+      weight: null,
+      saved: [],
+      wow: {
+        'eleven':[{ x: 0, y: 20 }, { x: 1, y: 30 }],
+        'twelve':[{ x: 0, y: 20 }, { x: 1, y: 30 }],
+      },
       exercises: {
-        'back': [{ name: 'yolo', description: 'hey hey hey' }, { name: 'what-up', description: 'is this working' }],
-        'chest': [{ name: 'yolo', description: 'hey hey hey' }, { name: 'what-up', description: 'is this working' }],
+        'default': [],
+        'Back': [
+          { name: 'Bent Over Rowing', description: 'Bend at hips, don\'t arch back, pull weight in towards belly button', id: 'eleven', image1: '../../Public/images/bentrows.png' },
+          { name: 'Chin-ups', description: 'Hang From bar with palms facing the wall behind you, pull chin above bar', id: 'twelve' },
+        ],
+        'Chest': [
+          { name: 'Bench Press', description: 'Align weights over chest, fully extend arms then bring weights down to chest', id: 21 },
+          { name: 'Cable Cross-over', description: 'Have a cable in each hand at shoulder level, seperate and bring hands together while keeping arms straight', id: 22 },
+        ],
+        'Shoulders': [
+          { name: 'Lateral Raises', description: 'Hold weights at side, moves arms to horizantal while keeping arms straight', id: 31 },
+          { name: 'Shoulder Press', description: 'Bring weight to shoulder height, press weight above head', id: 32 },
+        ],
+        'Bicep': [
+          { name: 'Bicep Curl', description: 'Hold weight with palms facing inward, rotate 90deg as you bring them to shoulder while keeping elbow still', id: 41 },
+          { name: 'Hammercurl', description: 'Hold weight with palms facing inward, bring weights to shoulder while keeping elbows and wrists still', id: 42 },
+        ],
+        'Tricep': [
+          { name: 'Narrow Grip Bench', description: 'Hold bar with straight arms and close grip above chest, bring down to chest while keeping elbows in', id: 51 },
+          { name: 'Dips', description: 'Hold two narrowly placed and elevated bars, keeping chest up straighten and extend arms while feet are elevated', id: 52 },
+        ],
+        'Legs': [
+          { name: 'Barbell Lunges', description: 'Put weighted bar on shoulders, take step foward and bend back knee to touch floor', id: 61 },
+          { name: 'Front Squat', description: 'Put weighted bar on front of shoulders, bend knees to 90deg while keeping chest upright and back straight', id: 62 },
+        ],
+        'Abs': [
+          { name: 'Crunch', description: 'lie on back with knees bent to feet flat on floor, without extremity movement, try to bring chin to knees', id: 71 },
+          { name: 'Flutter Kicks', description: 'lie on back with feet elevated a few inches off floor, make small kicking motions while elevated', id: 72 },
+        ],
       },
       lists: [
-        { name: 'back' },
-        { name: 'chest' },
-        { name: 'shoulder' },
-        { name: 'bi' },
-        { name: 'tri' },
-        { name: 'leg' },
-        { name: 'ab' },
+        { name: 'Back' },
+        { name: 'Chest' },
+        { name: 'Shoulders' },
+        { name: 'Bicep' },
+        { name: 'Tricep' },
+        { name: 'Legs' },
+        { name: 'Abs' },
       ],
-      type: 'default default default',
+      type: 'default',
       date: '',
       lineData: [
         {
           name: 'series1',
-          values: [ { x: 0, y: 20 }, { x: 1, y: 30 }, { x: 2, y: 10 }, { x: 3, y: 5 }, { x: 4, y: 8 }, { x: 5, y: 15 }, { x: 6, y: 10 } ],
+          values: [{ x: 0, y: 20 }, { x: 1, y: 30 }, { x: 2, y: 10 }, { x: 3, y: 5 }, { x: 4, y: 8 }, { x: 5, y: 15 }, { x: 6, y: 10 }],
           strokeWidth: 3,
           strokeDashArray: "5,5",
-          shapeColor: "red",
-        },
-        {
-          name: 'series2',
-          stroke: '#FFFFFF',
-          values : [ { x: 0, y: 8 }, { x: 1, y: 5 }, { x: 2, y: 20 }, { x: 3, y: 12 }, { x: 4, y: 4 }, { x: 5, y: 6 }, { x: 6, y: 2 } ],
-        },
-        {
-          name: 'series3',
-          values: [ { x: 0, y: 0 }, { x: 1, y: 5 }, { x: 2, y: 8 }, { x: 3, y: 2 }, { x: 4, y: 6 }, { x: 5, y: 4 }, { x: 6, y: 2 } ],
-        },
-        {
-          name: 'series4',
-          values: [ { x: 0, y: 0 }, { x: 1, y: 3 }, { x: 2, y: 12 }, { x: 3, y: 3 }, { x: 4, y: 4 }, { x: 5, y: 7 }, { x: 6, y: 6 } ],
-        },
-        {
-          name: 'series5',
-          values: [ { x: 0, y: 3 }, { x: 1, y: 4 }, { x: 2, y: 5 }, { x: 3, y: 6 }, { x: 4, y: 7 }, { x: 5, y: 8 }, { x: 6, y: 9 }, { x: 7, y: 3 }, { x: 8, y: 4 }, { x: 9, y: 5 }, { x: 10, y: 6 }, { x: 11, y: 7 }, { x: 12, y: 8 }, { x: 13, y: 9 } ],
         },
       ],
     };
@@ -79,9 +94,8 @@ export default class App extends Component {
   }
 
   setType(e) {
-    console.log('SETTING THE FUCK OUT OF THIS ' + e.target.value)
     this.setState({
-      type: e.target.value,
+      type: e.target.id,
     });
   }
 
@@ -92,12 +106,33 @@ export default class App extends Component {
   }
 
   enterWt() {
+    if (this.state.holderWt.length !== 0) {
+      this.setState({
+        weight: this.state.holderWt,
+      });
+    }
+  }
+
+  saveExercise(event) {
+    const newStuff = {
+      name: event.target.id,
+      lib: this.state.wow[event.target.value],
+    };
+    const newArray = this.state.saved.slice();
+    newArray.push(newStuff);
     this.setState({
-      weight: this.state.holderWt,
+      saved: newArray,
     });
   }
-  check() {
-    console.log(this.state.type)
+
+  tempBackButton() {
+    this.setState({
+      type: 'default',
+    });
+  }
+
+  click() {
+    console.log(this.state.saved);
   }
 
   render() {
@@ -116,14 +151,17 @@ export default class App extends Component {
           enterWt={this.enterWt.bind(this)}
           holderWt={this.state.holderWt}
           weight={this.state.weight}
+          placeWt={this.state.placeWt}
         />
         <List
           lists={this.state.lists}
           setType={(e) => this.setType(e)}
         />
         <Exercise
-          exercises={this.state.exercises}
+          saveExercise={(e) => this.saveExercise(e)}
+          exercises={this.state.exercises[this.state.type]}
         />
+        <button onClick={this.tempBackButton.bind(this)}>Wez gonna Goz back</button>
         <LineChart
           legend={true}
           data={this.state.lineData}
@@ -140,7 +178,7 @@ export default class App extends Component {
           xAxisLabel="Elapsed Time (sec)"
           gridHorizontal={true}
         />
-        <button onClick={this.check.bind(this)}>click me</button>
+        <button onClick={this.click.bind(this)}>click me to check consoles</button>
       </div>
     );
   }
