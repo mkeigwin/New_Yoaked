@@ -45,13 +45,17 @@ module.exports = {
         test: /\.svg$/,
         loader: 'file-loader?name=/img/[name].[hash:base64:5].[ext]'
       },
-      {
-        test: /\.gif$/,
-        loader: 'file-loader?name=/img/[name].[hash:base64:5].[ext]'
-      },
-      { test: /\.jpg$/,
-        loader: 'file-loader?name=/img/[name].[hash:base64:5].[ext]'
-      },
+      { test: /\.(png|gif|jpg)$/, loader: 'file-loader?name=/images/[name].[ext]' },
+      // {
+      //   test: /\.gif$/,
+      //   loader: 'file-loader?name=/img/[name].[hash:base64:5].[ext]'
+      // },
+      // { test: /\.jpg$/,
+      //   loader: 'file-loader?name=/img/[name].[hash:base64:5].[ext]'
+      // },
+      // { test: /\.png$/,
+      //   loader: 'file-loader?name=/img/[name].[hash:base64:5].[ext]'
+      // },
       {
         test: /\.(js|jsx)$/,
         loader: 'babel'
