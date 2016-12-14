@@ -40,7 +40,7 @@ export default class App extends Component {
       displaySignup: false,
       hideLogin: true,
       hideSignup: true,
-      displaylogout: false,
+      // displaylogout: false,
       placeWt: 'my weight',
       holderWt: '',
       weight: null,
@@ -371,7 +371,7 @@ export default class App extends Component {
             hideLogin: true,
             displaySignup: false,
             hideSignup: true,
-            displaylogout: true,
+            // displaylogout: true,
           });
           this.handleAjaxGetAll();
         }
@@ -460,7 +460,7 @@ export default class App extends Component {
         </div> : null}
         {this.state.hideComponent ? <div>
           <Logout
-            displaylogout={this.state.displaylogout}
+            // displaylogout={this.state.displaylogout}
             logout={this.logout.bind(this)}
           />
         <h2>{this.state.notification}</h2>
@@ -478,11 +478,11 @@ export default class App extends Component {
           <main>
             <div className="left">
               {this.state.exerciseShow ? <div>
+                <button onClick={this.tempBackButton.bind(this)}>Show Library</button>
                 <Exercise
                   saveExercise={(e) => this.saveExercise(e)}
                   exercises={this.state.exercises[this.state.type]}
                 />
-                <button onClick={this.tempBackButton.bind(this)}>Show Library</button>
               </div> : null}
               {this.state.LibraryShow ? <div>
                 <Library
@@ -492,22 +492,24 @@ export default class App extends Component {
                 />
               </div> : null}
             </div>
-            <LineChart
-              legend={true}
-              data={this.state.lineData}
-              width={500}
-              height={400}
-              viewBoxObject={{
-                x: 0,
-                y: 0,
-                width: 500,
-                height: 400,
-              }}
-              title="Workout Progress"
-              yAxisLabel="One Rep Max (lbs)"
-              xAxisLabel="Time Since You Began Tracking Workout (days)"
-              gridHorizontal={true}
-            />
+            <div className="right">
+              <LineChart
+                legend={true}
+                data={this.state.lineData}
+                width={500}
+                height={400}
+                viewBoxObject={{
+                  x: 0,
+                  y: 0,
+                  width: 500,
+                  height: 400,
+                }}
+                title="Workout Progress"
+                yAxisLabel="One Rep Max (lbs)"
+                xAxisLabel="Time Since You Began Tracking Workout (days)"
+                gridHorizontal={true}
+              />
+            </div>
           </main>
           <button onClick={this.click.bind(this)}>TEMP CONSOLE CHECK</button>
         </div> : null}

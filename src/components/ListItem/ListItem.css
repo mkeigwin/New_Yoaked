@@ -4,3 +4,6 @@
   border: 2px solid black;
   padding: 8px;
 }
+.indList:hover {
+  background-color: lightgrey;
+}

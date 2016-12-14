@@ -7,12 +7,9 @@ class Logout extends Component {
   render() {
     return (
       <div>
-        { this.props.displaylogout ? <div>
-          <button onClick={this.props.logout}>Logout</button>
-        </div> : null }
+        <button onClick={this.props.logout}>Logout</button>
       </div>
     );
   }
 }
-
 export default Logout;

@@ -55,4 +55,8 @@ main {
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  margin: 3vw;
+}
+.left, .right {
+  margin: 0 3vw;
 }
