@@ -1,6 +1,5 @@
 export default class AjaxFunctions {
   static getExercise(token) {
-    console.log("********hello*************", token)
     return fetch('/exercise', {
       method: 'GET',
       headers: {

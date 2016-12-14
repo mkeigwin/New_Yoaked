@@ -20,11 +20,15 @@ function authenticate(req, res, next) {
   console.log(req.body.password)
   db.one('SELECT * FROM users WHERE username = $/username/;', req.body)
     .then((data) => {
-      console.log(data.password)
+      console.log(data)
       const match = bcrypt.compareSync(req.body.password, data.password);
       if (match) {
         const myToken = jwt.sign({ username: req.body.username }, process.env.SECRET);
-        res.status(200).json(myToken);
+        const resObj = {
+          token: myToken,
+          id: data.user_id,
+        };
+        res.status(200).json(resObj);
       } else {
         res.status(500).send('fuck u fite me irl');
       }

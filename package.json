@@ -26,16 +26,14 @@
   "homepage": "https://github.com/gittheking/react_template#readme",
   "dependencies": {
     "bcryptjs": "^2.4.0",
+    "dotenv": "^2.0.0",
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
     "express-jwt": "^5.1.0",
     "jsonwebtoken": "^7.2.1",
     "morgan": "^1.7.0",
     "path": "^0.12.7",
-    "pg-promise": "^5.2.7",
-    "react": "^15.4.1",
-    "react-d3": "^0.4.0",
-    "react-dom": "^15.4.1"
+    "pg-promise": "^5.2.7"
   },
   "devDependencies": {
     "babel": "^6.5.2",
@@ -61,6 +59,9 @@
     "react-dom": "^15.3.0",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
-    "webpack": "^1.13.1"
+    "webpack": "^1.13.1",
+    "react": "^15.4.1",
+    "react-d3": "^0.4.0",
+    "react-dom": "^15.4.1"
   }
 }

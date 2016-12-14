@@ -25,6 +25,7 @@ export default class App extends Component {
         password: ''
       },
       currentToken: '',
+      currentUser: '',
       notification:"",
       hideComponent: false,
       hidelogs: true,
@@ -38,9 +39,26 @@ export default class App extends Component {
       holderWt: '',
       weight: null,
       days: NaN,
-      start: '2016,12,9',
-      // start: 'none',
+      // start: '2016,12,9',
+      start: 'none',
       saved: [],
+      // wow: {
+      //   weight: [],
+      //   eleven: [],
+      //   twelve: [],
+      //   twentyone: [],
+      //   twentytwo: [],
+      //   thirtyone: [],
+      //   thirtytwo: [],
+      //   fourtyone: [],
+      //   fourtytwo: [],
+      //   fiftyone: [],
+      //   fiftytwo: [],
+      //   sixtyone: [],
+      //   sixtytwo: [],
+      //   seventyone: [],
+      //   seventytwo: [],
+      // },
       wow: {
         weight: [{ x: 0, y: 180 }, { x: 1, y: 178 }, { x: 2, y: 182 }],
         eleven: [{ x: 0, y: 20 }, { x: 1, y: 30 }],
@@ -183,9 +201,9 @@ export default class App extends Component {
       const exData = {
         start:this.state.start,
         wow:this.state.wow,
+        user_id:this.state.currentUser,
         saved:this.state.saved,
       };
-      console.log('GREETINGS FROM ENTERWT')
       AjaxFunctions.postExercise(exData, this.state.currentToken);
     } else {
       console.log('enter weight to update');
@@ -213,6 +231,7 @@ export default class App extends Component {
       const exSave = {
         start:this.state.start,
         wow:this.state.wow,
+        user_id:this.state.currentUser,
         saved:this.state.saved,
       };
       AjaxFunctions.postExercise(exSave, this.state.currentToken);
@@ -229,6 +248,7 @@ export default class App extends Component {
     const dSave = {
       start:this.state.start,
       wow:this.state.wow,
+      user_id:this.state.currentUser,
       saved:this.state.saved,
     };
     AjaxFunctions.postExercise(dSave, this.state.currentToken);
@@ -253,6 +273,7 @@ export default class App extends Component {
       const exGraph = {
         start:this.state.start,
         wow:this.state.wow,
+        user_id:this.state.currentUser,
         saved:this.state.saved,
       };
       AjaxFunctions.postExercise(exGraph, this.state.currentToken);
@@ -275,14 +296,12 @@ export default class App extends Component {
 // added from Dan Pease Auth Temp
   trackSignupForm(e) {
     let fieldsArr = e.target.parentElement.childNodes
-    //skylar pls remember to consolelog fieldsArr
     this.setState({
       signupForm: {
         username: fieldsArr[0].value,
         password: fieldsArr[1].value
       }
     }, () => {
-      console.log(this.state)
     })
   }
 
@@ -295,13 +314,11 @@ export default class App extends Component {
         password: fieldsArr[1].value
       }
     }, () => {
-      console.log(this.state)
     })
   }
 
 // added from Dan Pease Auth Temp
   postSignup() {
-    console.log('clicked')
     fetch('/user/signup', {
       method: 'POST',
       headers: {
@@ -316,7 +333,10 @@ export default class App extends Component {
       this.setState({
         signupForm: {
           username: '',
-          password: ''
+          password: '',
+          // hideLogin:true,
+          // hideSignup:true,
+          // displayLogin: false,
         }
       })
     })
@@ -324,7 +344,6 @@ export default class App extends Component {
 
 // added from Dan Pease Auth Temp
   postLogin() {
-    console.log('clicked')
     fetch('/user/login', {
       method: 'POST',
       headers: {
@@ -338,7 +357,8 @@ export default class App extends Component {
     .then(r => r.json())
     .then((data) => {
       this.setState({
-        currentToken: data,
+        currentToken: data.token,
+        currentUser: data.id,
         loginForm: {
           username: '',
           password: '',
@@ -347,7 +367,6 @@ export default class App extends Component {
         hidelogs: false,
         notification: '',
       }, () => {
-        console.log(this.state)
         this.whenLogged();
       })
     })
@@ -364,8 +383,12 @@ export default class App extends Component {
     this.setState({
       currentToken: '',
       hideComponent: false,
+      hidelogs: true,
+      hideLogin:true,
+      hideSignup:true,
+      displayLogin:false,
+      displaySignup: false,
     }, () => {
-      console.log('after logout ', this.state)
     })
   }
 
@@ -416,8 +439,8 @@ export default class App extends Component {
   }
 
   click() {
-    const yay = this.state.saved;
-    console.log('this is state', yay);
+    console.log(this.state.currentUser);
+    console.log(this.state.currentToken);
   }
 
   render() {
