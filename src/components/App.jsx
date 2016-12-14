@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import SignUp from './SignUp/SignUp.js';
-import Login from './Login/Login.js';
+import Signup from './Signup/Signup.jsx';
+import Login from './Login/Login.jsx';
 import Form from './Form/Form.jsx';
 import Library from './Library/Library.js';
 import Exercise from './Exercise/Exercise';
@@ -9,8 +9,6 @@ import Logout from './Logout/Logout';
 import { LineChart } from 'react-d3';
 import AjaxFunctions from '../helpers/AjaxFunctions';
 import bentRows from '../images/bentrows.png';
-
-// import AjaxFunctions from '../helpers/AjaxFunctions';
 import './App.css';
 
 export default class App extends Component {
@@ -18,29 +16,24 @@ export default class App extends Component {
     super();
 
     this.state = {
-      signup: {
+      signupForm: {
         username: '',
-        password: '',
+        password: ''
       },
-      login: {
-        loggedIn: false,
+      loginForm: {
         username: '',
-        password: '',
+        password: ''
       },
+      currentToken: '',
       notification:"",
-
-      hideComponent: true,
-      hidelogs: false,
-      // hideComponent: false,
-      // hidelogs: true,
-
+      hideComponent: false,
+      hidelogs: true,
+      hideLogin:true,
+      hideSignup:true,
+      displayLogin:false,
+      displaySignup: false,
       LibraryShow: true,
       exerciseShow:false,
-      displayLogin: false,
-      displaySignup: false,
-      hideLogin: true,
-      hideSignup: true,
-      // displaylogout: false,
       placeWt: 'my weight',
       holderWt: '',
       weight: null,
@@ -107,11 +100,10 @@ export default class App extends Component {
       ],
       type: 'default',
       date: '',
-      lineData: [
-      ],
+      lineData: [],
     };
   }
-  componentDidMount() {
+  whenLogged() {
     this.handleAjaxGetAll().then(() => {
   // PARTS of date counter taken from this link
   // http://stackoverflow.com/questions/2627473/how-to-calculate-the-number-of-days-between-two-dates-using-javascript
@@ -191,10 +183,10 @@ export default class App extends Component {
       const exData = {
         start:this.state.start,
         wow:this.state.wow,
-        username:this.state.login.username,
         saved:this.state.saved,
       };
-      AjaxFunctions.postExercise(exData);
+      console.log('GREETINGS FROM ENTERWT')
+      AjaxFunctions.postExercise(exData, this.state.currentToken);
     } else {
       console.log('enter weight to update');
     }
@@ -221,10 +213,9 @@ export default class App extends Component {
       const exSave = {
         start:this.state.start,
         wow:this.state.wow,
-        username:this.state.login.username,
         saved:this.state.saved,
       };
-      AjaxFunctions.postExercise(exSave);
+      AjaxFunctions.postExercise(exSave, this.state.currentToken);
     }
   }
 
@@ -238,10 +229,9 @@ export default class App extends Component {
     const dSave = {
       start:this.state.start,
       wow:this.state.wow,
-      username:this.state.login.username,
       saved:this.state.saved,
     };
-    AjaxFunctions.postExercise(dSave);
+    AjaxFunctions.postExercise(dSave, this.state.currentToken);
   }
 
   setgraph(e) {
@@ -263,10 +253,9 @@ export default class App extends Component {
       const exGraph = {
         start:this.state.start,
         wow:this.state.wow,
-        username:this.state.login.username,
         saved:this.state.saved,
       };
-      AjaxFunctions.postExercise(exGraph);
+      AjaxFunctions.postExercise(exGraph, this.state.currentToken);
     } else {
       console.log('enter reps and weight to update graph');
       this.setState({
@@ -283,104 +272,105 @@ export default class App extends Component {
     });
   }
 
-  updateFormSignUpUsername(e) {
+// added from Dan Pease Auth Temp
+  trackSignupForm(e) {
+    let fieldsArr = e.target.parentElement.childNodes
+    //skylar pls remember to consolelog fieldsArr
     this.setState({
-      signup: {
-        username: e.target.value,
-        password: this.state.signup.password,
-      },
-    });
+      signupForm: {
+        username: fieldsArr[0].value,
+        password: fieldsArr[1].value
+      }
+    }, () => {
+      console.log(this.state)
+    })
   }
-  updateFormSignUpPassword(e) {
-    this.setState({
-      signup: {
-        username: this.state.signup.username,
-        password: e.target.value,
-      },
-    });
-  }
-  updateFormLogInUsername(e) {
-    this.setState({
-      login: {
-        username: e.target.value,
-        password: this.state.login.password,
-      },
-    });
-  }
-  updateFormLogInPassword(e) {
-    this.setState({
-      login: {
-        username: this.state.login.username,
-        password: e.target.value,
-      },
-    });
-  }
-//signs up a new user by adding them to the database
-  handleSignUp() {
-    let username = this.state.signup.username;
-    let password = this.state.signup.password;
 
-    AjaxFunctions.signUp(username, password)
-    .then(this.setState({
-      signup: {
-        username: '',
-        password: '',
-      },
-      displayLogin: false,
-      hideLogin: true,
-      displaySignup: false,
-      hideSignup: true,
-    }))
-    .catch(err => console.log(err));
-  }
-//empties the state after user login
-  logout() {
+// added from Dan Pease Auth Temp
+  trackLoginForm(e) {
+    let fieldsArr = e.target.parentElement.childNodes
     this.setState({
-      login: {
-        loggedIn: false,
-      },
-      displayLogin: false,
-      hideLogin: true,
-      displaySignup: false,
-      hideSignup: true,
-      hideComponent: false,
-    });
+      loginForm: {
+        username: fieldsArr[0].value,
+        password: fieldsArr[1].value
+      }
+    }, () => {
+      console.log(this.state)
+    })
   }
-//logs out user with fetch to database with their username
-  handleLogIn() {
-    let username = this.state.login.username;
-    let password = this.state.login.password;
 
-    AjaxFunctions.logIn(username, password)
-      .then(userData => {
-        if (userData.password === false) {
-          this.setState({
-            notification: 'INVALID USERNAME AND PASSWORD COMBINATION',
-            displayLogin: false,
-            hideLogin: true,
-            displaySignup: false,
-            hideSignup: true,
-          });
-        } else {
-          console.log('logged in');
-          this.setState({
-            notification: '',
-            hidelogs:false,
-            hideComponent: true,
-            displayLogin: false,
-            hideLogin: true,
-            displaySignup: false,
-            hideSignup: true,
-            // displaylogout: true,
-          });
-          this.handleAjaxGetAll();
+// added from Dan Pease Auth Temp
+  postSignup() {
+    console.log('clicked')
+    fetch('/user/signup', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        username: this.state.signupForm.username,
+        password: this.state.signupForm.password
+      })
+    })
+    .then((data) => {
+      this.setState({
+        signupForm: {
+          username: '',
+          password: ''
         }
       })
-      .catch(err => console.log(err));
+    })
+  }
+
+// added from Dan Pease Auth Temp
+  postLogin() {
+    console.log('clicked')
+    fetch('/user/login', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        username: this.state.loginForm.username,
+        password: this.state.loginForm.password
+      })
+    })
+    .then(r => r.json())
+    .then((data) => {
+      this.setState({
+        currentToken: data,
+        loginForm: {
+          username: '',
+          password: '',
+        },
+        hideComponent: true,
+        hidelogs: false,
+        notification: '',
+      }, () => {
+        console.log(this.state)
+        this.whenLogged();
+      })
+    })
+
+    if (this.state.currentToken === '') {
+      this.setState({
+        notification: 'userame and password invalid, please signup',
+      });
+    }
+  }
+
+// added from Dan Pease Auth Temp
+  logout() {
+    this.setState({
+      currentToken: '',
+      hideComponent: false,
+    }, () => {
+      console.log('after logout ', this.state)
+    })
   }
 
   handleAjaxGetAll() {
-    return AjaxFunctions.getExercise()
+    return AjaxFunctions.getExercise(this.state.currentToken)
       .then(exercise => {
         const length = (exercise.length - 1);
         if (length >= 0) {
@@ -394,6 +384,23 @@ export default class App extends Component {
         }
       });
   }
+
+  loginDisplay() {
+    this.setState({
+      hideSignup: false,
+      hideLogin: false,
+      displayLogin: true,
+    });
+  }
+
+  SignupDisplay() {
+    this.setState({
+      hideSignup: false,
+      hideLogin: false,
+      displaySignup: true,
+    });
+  }
+
   switchToSignup() {
     this.setState({
       displayLogin: false,
@@ -406,15 +413,6 @@ export default class App extends Component {
       displayLogin: true,
       displaySignup: false,
     });
-  }
-
-//get all drawungs and sets all the drawings to the array
-  loginDisplay() {
-    this.setState({ displayLogin: true, hideLogin: false, displaySignup: false, hideSignup: false });
-  }
-//onclick the login button, inputs appear by using boolean values
-  SignupDisplay() {
-    this.setState({ displaySignup: true, hideSignup: false, displayLogin: false, hideLogin: false });
   }
 
   click() {
@@ -431,39 +429,32 @@ export default class App extends Component {
           <div className="logo"></div>
         </div>
         <h3 className="date">{this.state.date}</h3>
+          <h2>{this.state.notification}</h2>
         {this.state.hidelogs ? <div className="logs">
           <div className="logBorder">
-            <SignUp
-              signUpUsername={this.state.signup.username}
-              signUpPassword={this.state.signup.password}
-              updateFormUsername={event => this.updateFormSignUpUsername(event)}
-              updateFormPassword={event => this.updateFormSignUpPassword(event)}
-              handleFormSubmit={() => this.handleSignUp()}
-              displaySignup={this.state.displaySignup}
+            <Signup
+              trackSignupForm={this.trackSignupForm.bind(this)}
+              postSignup={this.postSignup.bind(this)}
               hideSignup={this.state.hideSignup}
               SignupDisplay={this.SignupDisplay.bind(this)}
+              displaySignup={this.state.displaySignup}
               switchToLogin={this.switchToLogin.bind(this)}
             />
             <Login
-              className={this.state.login.loggedIn ? 'hidden' : ''}
-              logInUsername={this.state.login.username}
-              logInPassword={this.state.login.password}
-              updateFormUsername={event => this.updateFormLogInUsername(event)}
-              updateFormPassword={event => this.updateFormLogInPassword(event)}
-              handleFormSubmit={() => this.handleLogIn()}
-              displayLogin={this.state.displayLogin}
+              trackLoginForm={this.trackLoginForm.bind(this)}
+              postLogin={this.postLogin.bind(this)}
               hideLogin={this.state.hideLogin}
               loginDisplay={this.loginDisplay.bind(this)}
               switchToSignup={this.switchToSignup.bind(this)}
+              displayLogin={this.state.displayLogin}
+              hideLogin={this.state.hideLogin}
             />
           </div>
         </div> : null}
         {this.state.hideComponent ? <div>
           <Logout
-            // displaylogout={this.state.displaylogout}
             logout={this.logout.bind(this)}
           />
-        <h2>{this.state.notification}</h2>
           <Form
             updateWt={(e) => this.updateWt(e)}
             enterWt={this.enterWt.bind(this)}

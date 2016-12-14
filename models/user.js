@@ -1,32 +1,38 @@
-const { sqlDB } = require('./dbConnect');
+// added from Dan Pease Auth Temp
+const db = require('./dbConnect');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 
+const salt = 10;
+
+function createUser(req, res, next) {
+  console.log(req.body)
+  db.none('INSERT INTO users (username, password) VALUES ($1, $2);',
+    [req.body.username, bcrypt.hashSync(req.body.password, salt)])
+    .then( () => {
+      console.log('user created!')
+      next()
+    })
+  .catch(error => console.log(error))
+}
+
+function authenticate(req, res, next) {
+  console.log(req.body.password)
+  db.one('SELECT * FROM users WHERE username = $/username/;', req.body)
+    .then((data) => {
+      console.log(data.password)
+      const match = bcrypt.compareSync(req.body.password, data.password);
+      if (match) {
+        const myToken = jwt.sign({ username: req.body.username }, process.env.SECRET);
+        res.status(200).json(myToken);
+      } else {
+        res.status(500).send('fuck u fite me irl');
+      }
+    })
+  .catch(error => console.log(error))
+}
 
 module.exports = {
-  createUser(req, res, next) {
-    sqlDB.none(`
-      INSERT INTO users
-        (username, password)
-      VALUES ($1, $2);
-      `, req.body)
-      .then(next())
-      .catch((err) => next(err));
-  },
-
-// when a user signsup, a user is created and added to the user table. all users have pass with them and usernames must be unique
-  findByUsername(req,res,next) {
-    sqlDB.one(`
-      SELECT * FROM
-        users
-      WHERE
-        username = $/username/;
-      `, req.body)
-      .then(user => {
-        console.log('models user', user);
-        res.user = user;
-        next();
-      })
-      .catch(() => next({ password: false }));
-  },
-
-// function that is able to login users matching username and password in users table
-};
+  createUser,
+  authenticate,
+}
