@@ -1,39 +1,22 @@
 export default class AjaxFunctions {
-  static getDrawings() {
-    return fetch('/paint', {
+  static getExercise() {
+    return fetch('/exercise', {
       method: 'GET',
     })
-      .then(r => r.json());
+    .then(r => r.json());
   }
 // ajax gets all drawing into db
-  static addDrawing(drawing) {
-    return fetch('/paint', {
+  static postExercise(exercise) {
+    return fetch('/exercise', {
       headers: {
         'Content-Type':'application/json',
       },
       method:'POST',
-      body: JSON.stringify(drawing),
+      body: JSON.stringify(exercise),
     })
     .then(r => r.json());
   }
-// ajax puts new drawing into db
-  static getDrawing(id) {
-    return fetch(`/paint/${id}`, {
-      method: 'GET',
-    })
-    .then(r => r.json());
-  }
-// ajax gets one drawing into db based on id
-  static deleteDrawing(id) {
-    return fetch(`/paint/${id}`, {
-      method: 'DELETE',
-    });
-  }
-// ajax deletes one drawing into db based on id
-  static getImage(id) {
-    return document.querySelector(`#canvas${id}`);
-  }
-// ajax gets one drawing image on the canvas and saves to db based on id
+
   static signUp(user, pass) {
     console.log(user, pass);
     return fetch('/users', {

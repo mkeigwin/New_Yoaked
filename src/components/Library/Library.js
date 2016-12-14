@@ -11,6 +11,7 @@ export default class Library extends Component {
           name={this.props.saved[i].name}
           id={this.props.saved[i].id}
           setgraph={this.props.setgraph}
+          deleteExercise={this.props.deleteExercise}
         />
     ));
     return (

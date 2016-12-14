@@ -14,7 +14,3 @@ export default class ExerciseItem extends Component {
     );
   }
 }
-        // <div className="buttonz">
-        // <button onClick={this.props.editCanvas}>Edit</button>
-        // <button onClick={this.props.deleteCanvas}>Delete</button>
-        // </div>

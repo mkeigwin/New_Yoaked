@@ -14,9 +14,9 @@ app.use(logger(isDev ? 'dev' : 'common'));
 app.use(express.static(path.join(__dirname, 'dist')));
 app.use(bodyParser.json());
 
-// app.use('/paint', require('./routes/paint'));
-// app.use('/users', require('./routes/users'));
-// app.use('/auth', require('./routes/auth'));
+app.use('/exercise', require('./routes/exercise'));
+app.use('/users', require('./routes/users'));
+app.use('/auth', require('./routes/auth'));
 
 app.listen(PORT, () => console.log('server here! listening on', PORT));
 

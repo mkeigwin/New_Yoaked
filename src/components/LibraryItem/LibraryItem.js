@@ -10,7 +10,8 @@ export default class LibraryItem extends Component {
       placeLbs: "enter weight",
       holderReps: '',
       holderLbs: '',
-      max: NaN,
+      max: '',
+      holderText: '',
     };
   }
   updateReps(e) {
@@ -34,6 +35,7 @@ export default class LibraryItem extends Component {
         placeReps: this.state.holderReps,
         placeLbs: this.state.holderLbs,
         max: onrepMax,
+        holderText: 'this is a tester for ',
       });
     }
   }
@@ -44,6 +46,7 @@ export default class LibraryItem extends Component {
     return (
       <div>
         <h2 style={makeup}>{this.props.name}</h2>
+        <h4>{this.state.holderText}{this.state.max}</h4>
         <button id={this.props.id} name={this.props.name} value={this.state.max} onClick={this.props.setgraph}>Graph</button>
         <LibraryForm
         placeReps={this.state.placeReps}
@@ -52,6 +55,7 @@ export default class LibraryItem extends Component {
         updateLbs={this.updateLbs.bind(this)}
         enterData={this.enterData.bind(this)}
         />
+        <button id={this.props.name} value={this.props.id} onClick={this.props.deleteExercise}>Delete</button>
       </div>
     );
   }
