@@ -13,21 +13,24 @@ class Login extends Component {
           <button onClick={this.props.loginDisplay}>Login!</button>
         </div> : null }
         { this.props.displayLogin ? <div>
-          <button onClick={this.props.handleFormSubmit}>
-            Log In!
-          </button>
-          <input className="reSize"
-            type="text"
-            placeholder="username"
-            value={this.props.logInUsername}
-            onChange={this.props.updateFormUsername}
-          />
-          <input className="reSize"
-            type="password"
-            placeholder="password"
-            value={this.props.logInPassword}
-            onChange={this.props.updateFormPassword}
-          />
+          <div className="btz">
+            <button onClick={this.props.switchToSignup}>Sign Up!</button>
+            <button className="loginColor" onClick={this.props.handleFormSubmit}>Log In!</button>
+          </div>
+          <div className="posRel">
+            <input className="reSize"
+              type="text"
+              placeholder="username"
+              value={this.props.logInUsername}
+              onChange={this.props.updateFormUsername}
+            />
+            <input className="reSize"
+              type="password"
+              placeholder="password"
+              value={this.props.logInPassword}
+              onChange={this.props.updateFormPassword}
+            />
+          </div>
         </div> : null }
       </div>
     );

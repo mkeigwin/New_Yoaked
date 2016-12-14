@@ -1,0 +1,6 @@
+.indList {
+  display: inline-block;
+  margin: 0 .2vw;
+  border: 2px solid black;
+  padding: 8px;
+}

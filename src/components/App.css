@@ -1,7 +1,58 @@
 * {
   margin: 0;
   padding: 0;
+  /*background-image: url('https://mytorontoeh.files.wordpress.com/2011/09/kevin_spacey_american_beauty_001.jpg?w=510');*/
 }
 img {
   height: 50px;
+}
+.logs {
+  height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.title {
+  text-align: center;
+  font-size: 55px;
+  margin-top: 45px;
+}
+.logo {
+  background-image: url('http://www.clipartkid.com/images/179/muscles-clip-art-at-clker-com-vector-clip-art-online-royalty-free-VSDmS6-clipart.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 100px;
+  width: 72px;
+}
+.flip {
+  display: inline-block;
+  transform: scaleX(-1);
+  filter: FlipH;
+}
+.titleDisplay {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.date {
+  text-align: center;
+  font-size: 5vh;
+  margin-top: 15px;
+}
+.logBorder {
+  border: 5px solid black;
+  padding: 20vh;
+  background-color: rgba(211,211,211,.5);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+main {
+ display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 }

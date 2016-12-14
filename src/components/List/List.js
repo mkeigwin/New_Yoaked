@@ -15,7 +15,7 @@ export default class List extends Component {
         />
     ));
     return (
-      <div>
+      <div className="lists">
         {list}
       </div>
     );

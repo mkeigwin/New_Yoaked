@@ -28,6 +28,14 @@ export default class App extends Component {
         password: '',
       },
       notification:"",
+
+      hideComponent: true,
+      hidelogs: false,
+      // hideComponent: false,
+      // hidelogs: true,
+
+      LibraryShow: true,
+      exerciseShow:false,
       displayLogin: false,
       displaySignup: false,
       hideLogin: true,
@@ -153,6 +161,8 @@ export default class App extends Component {
   setType(e) {
     this.setState({
       type: e.target.id,
+      LibraryShow: false,
+      exerciseShow: true,
     });
   }
 
@@ -268,6 +278,8 @@ export default class App extends Component {
   tempBackButton() {
     this.setState({
       type: 'default',
+      LibraryShow: true,
+      exerciseShow: false,
     });
   }
 
@@ -331,8 +343,7 @@ export default class App extends Component {
       hideLogin: true,
       displaySignup: false,
       hideSignup: true,
-      displaylogout: false,
-      clear: true,
+      hideComponent: false,
     });
   }
 //logs out user with fetch to database with their username
@@ -354,6 +365,8 @@ export default class App extends Component {
           console.log('logged in');
           this.setState({
             notification: '',
+            hidelogs:false,
+            hideComponent: true,
             displayLogin: false,
             hideLogin: true,
             displaySignup: false,
@@ -381,13 +394,27 @@ export default class App extends Component {
         }
       });
   }
+  switchToSignup() {
+    this.setState({
+      displayLogin: false,
+      displaySignup: true,
+    });
+  }
+
+  switchToLogin() {
+    this.setState({
+      displayLogin: true,
+      displaySignup: false,
+    });
+  }
+
 //get all drawungs and sets all the drawings to the array
   loginDisplay() {
-    this.setState({ displayLogin: true, hideLogin: false, displaySignup: false, hideSignup: true });
+    this.setState({ displayLogin: true, hideLogin: false, displaySignup: false, hideSignup: false });
   }
 //onclick the login button, inputs appear by using boolean values
   SignupDisplay() {
-    this.setState({ displaySignup: true, hideSignup: false, displayLogin: false, hideLogin: true });
+    this.setState({ displaySignup: true, hideSignup: false, displayLogin: false, hideLogin: false });
   }
 
   click() {
@@ -396,78 +423,94 @@ export default class App extends Component {
   }
 
   render() {
-    const noteColor = {
-      color: 'red',
-    };
     return (
       <div>
-      <h1 className="notify">{this.state.notification}</h1>
-      <h2>{this.state.notification}</h2>
-        <SignUp
-          signUpUsername={this.state.signup.username}
-          signUpPassword={this.state.signup.password}
-          updateFormUsername={event => this.updateFormSignUpUsername(event)}
-          updateFormPassword={event => this.updateFormSignUpPassword(event)}
-          handleFormSubmit={() => this.handleSignUp()}
-          displaySignup={this.state.displaySignup}
-          hideSignup={this.state.hideSignup}
-          SignupDisplay={this.SignupDisplay.bind(this)}
-        />
-        <Login
-          className={this.state.login.loggedIn ? 'hidden' : ''}
-          logInUsername={this.state.login.username}
-          logInPassword={this.state.login.password}
-          updateFormUsername={event => this.updateFormLogInUsername(event)}
-          updateFormPassword={event => this.updateFormLogInPassword(event)}
-          handleFormSubmit={() => this.handleLogIn()}
-          displayLogin={this.state.displayLogin}
-          hideLogin={this.state.hideLogin}
-          loginDisplay={this.loginDisplay.bind(this)}
-        />
-        <Logout
-          displaylogout={this.state.displaylogout}
-          logout={this.logout.bind(this)}
-        />
-        <h3>{this.state.date}</h3>
-        <h1 style={noteColor}>New Yoaked</h1>
-        <Form
-          updateWt={(e) => this.updateWt(e)}
-          enterWt={this.enterWt.bind(this)}
-          holderWt={this.state.holderWt}
-          weight={this.state.weight}
-          placeWt={this.state.placeWt}
-        />
-        <List
-          lists={this.state.lists}
-          setType={(e) => this.setType(e)}
-        />
-        <Exercise
-          saveExercise={(e) => this.saveExercise(e)}
-          exercises={this.state.exercises[this.state.type]}
-        />
-        <button onClick={this.tempBackButton.bind(this)}>Wez gonna Goz back</button>
-        <Library
-          saved={this.state.saved}
-          setgraph={this.setgraph.bind(this)}
-          deleteExercise={(e) => this.deleteExercise(e)}
-        />
-        <LineChart
-          legend={true}
-          data={this.state.lineData}
-          width={500}
-          height={400}
-          viewBoxObject={{
-            x: 0,
-            y: 0,
-            width: 500,
-            height: 400,
-          }}
-          title="Workout Progress"
-          yAxisLabel="One Rep Max (lbs)"
-          xAxisLabel="Time Since You Began Tracking Workout (days)"
-          gridHorizontal={true}
-        />
-        <button onClick={this.click.bind(this)}>click me to check consoles</button>
+        <div className="titleDisplay">
+          <div className="logo flip"></div>
+          <h1 className="title">New Yoaked</h1>
+          <div className="logo"></div>
+        </div>
+        <h3 className="date">{this.state.date}</h3>
+        {this.state.hidelogs ? <div className="logs">
+          <div className="logBorder">
+            <SignUp
+              signUpUsername={this.state.signup.username}
+              signUpPassword={this.state.signup.password}
+              updateFormUsername={event => this.updateFormSignUpUsername(event)}
+              updateFormPassword={event => this.updateFormSignUpPassword(event)}
+              handleFormSubmit={() => this.handleSignUp()}
+              displaySignup={this.state.displaySignup}
+              hideSignup={this.state.hideSignup}
+              SignupDisplay={this.SignupDisplay.bind(this)}
+              switchToLogin={this.switchToLogin.bind(this)}
+            />
+            <Login
+              className={this.state.login.loggedIn ? 'hidden' : ''}
+              logInUsername={this.state.login.username}
+              logInPassword={this.state.login.password}
+              updateFormUsername={event => this.updateFormLogInUsername(event)}
+              updateFormPassword={event => this.updateFormLogInPassword(event)}
+              handleFormSubmit={() => this.handleLogIn()}
+              displayLogin={this.state.displayLogin}
+              hideLogin={this.state.hideLogin}
+              loginDisplay={this.loginDisplay.bind(this)}
+              switchToSignup={this.switchToSignup.bind(this)}
+            />
+          </div>
+        </div> : null}
+        {this.state.hideComponent ? <div>
+          <Logout
+            displaylogout={this.state.displaylogout}
+            logout={this.logout.bind(this)}
+          />
+        <h2>{this.state.notification}</h2>
+          <Form
+            updateWt={(e) => this.updateWt(e)}
+            enterWt={this.enterWt.bind(this)}
+            holderWt={this.state.holderWt}
+            weight={this.state.weight}
+            placeWt={this.state.placeWt}
+          />
+          <List
+            lists={this.state.lists}
+            setType={(e) => this.setType(e)}
+          />
+          <main>
+            <div className="left">
+              {this.state.exerciseShow ? <div>
+                <Exercise
+                  saveExercise={(e) => this.saveExercise(e)}
+                  exercises={this.state.exercises[this.state.type]}
+                />
+                <button onClick={this.tempBackButton.bind(this)}>Show Library</button>
+              </div> : null}
+              {this.state.LibraryShow ? <div>
+                <Library
+                  saved={this.state.saved}
+                  setgraph={this.setgraph.bind(this)}
+                  deleteExercise={(e) => this.deleteExercise(e)}
+                />
+              </div> : null}
+            </div>
+            <LineChart
+              legend={true}
+              data={this.state.lineData}
+              width={500}
+              height={400}
+              viewBoxObject={{
+                x: 0,
+                y: 0,
+                width: 500,
+                height: 400,
+              }}
+              title="Workout Progress"
+              yAxisLabel="One Rep Max (lbs)"
+              xAxisLabel="Time Since You Began Tracking Workout (days)"
+              gridHorizontal={true}
+            />
+          </main>
+          <button onClick={this.click.bind(this)}>TEMP CONSOLE CHECK</button>
+        </div> : null}
       </div>
     );
   }
