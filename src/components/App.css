@@ -68,5 +68,8 @@ h4.rd3-chart-title {
   justify-content: center;
 }
 .notificationPlace {
-  margin: 0 auto;
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 15px;
 }

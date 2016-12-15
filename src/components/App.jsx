@@ -489,8 +489,8 @@ export default class App extends Component {
           <h1 className="title">New Yoaked</h1>
           <div className="logo"></div>
         </div>
+        <h2 className="notificationPlace">{this.state.notification}</h2>
         <h3 className="date">{this.state.date}</h3>
-          <h2 className="notificationPlace">{this.state.notification}</h2>
         {this.state.hidelogs ? <div className="logs">
           <div className="logBorder">
             <Signup
