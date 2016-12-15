@@ -1,2 +1,9 @@
-
+.weightForm {
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+  justify-content: center;
+  margin-top: 1.5vh;
+  margin-bottom: 1.5vh;
+}
 

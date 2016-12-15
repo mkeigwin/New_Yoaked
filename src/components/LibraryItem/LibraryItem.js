@@ -35,19 +35,16 @@ export default class LibraryItem extends Component {
         placeReps: this.state.holderReps,
         placeLbs: this.state.holderLbs,
         max: onrepMax,
-        holderText: 'this is a tester for ',
+        holderText: 'Your one rep max is ',
+        holderText2: ', click graph to save and view',
       });
     }
   }
   render() {
-    const makeup = {
-      color: 'red',
-    };
     return (
       <div>
-        <h2 style={makeup}>{this.props.name}</h2>
-        <h4>{this.state.holderText}{this.state.max}</h4>
-        <button id={this.props.id} name={this.props.name} value={this.state.max} onClick={this.props.setgraph}>Graph</button>
+        <h2 className="libTitle">{this.props.name}</h2>
+        <h4>{this.state.holderText}{this.state.max}{this.state.holderText2}</h4>
         <LibraryForm
         placeReps={this.state.placeReps}
         placeLbs={this.state.placeLbs}
@@ -55,7 +52,10 @@ export default class LibraryItem extends Component {
         updateLbs={this.updateLbs.bind(this)}
         enterData={this.enterData.bind(this)}
         />
-        <button id={this.props.name} value={this.props.id} onClick={this.props.deleteExercise}>Delete</button>
+        <div className="morebtns">
+          <button id={this.props.id} name={this.props.name} value={this.state.max} onClick={this.props.setgraph}>Graph</button>
+          <button id={this.props.name} value={this.props.id} onClick={this.props.deleteExercise}>Delete From Saved</button>
+        </div>
       </div>
     );
   }

@@ -39,8 +39,10 @@ export default class App extends Component {
       holderWt: '',
       weight: null,
       days: NaN,
-      // start: '2016,12,9',
-      start: 'none',
+
+      start: '2016,12,9',
+      // start: 'none',
+
       saved: [],
       // wow: {
       //   weight: [],
@@ -155,7 +157,15 @@ export default class App extends Component {
       const full = `${mm}/${dd}/${yyyy}`;
       this.setState({
         date: full,
-        lineData: [{ name: 'Weight', values: this.state.wow['weight'] }],
+        lineData: [{ values: [{ x: 24, y: 24 }, { x: 24, y: 16 }, { x: 28, y: 16 }] },
+        { values: [{ x: 12, y: 20 }, { x: 14, y: 20 }] },
+        { values: [{ x: 18, y: 24 }, { x: 18, y: 16 }, { x: 22, y: 16 }] },
+        { values: [{ x: 10, y: 16 }, { x: 10, y: 24 }] },
+        { values: [{ x: 30, y: 16 }, { x: 30, y: 24 }, { x: 34, y: 24 }, { x: 34, y: 16 }, { x: 30, y: 16 }] },
+        { values: [{ x: 16, y: 16 }, { x: 12, y: 16 }, { x: 12, y: 24 }, { x: 16, y: 24 }] },
+        { values: [{ x: 6, y: 20 }, { x: 10, y: 20 }] },
+        { values: [{ x: 6, y: 16 }, { x: 6, y: 24 }] },
+        { values: [{ x: 4, y: 15 }] }],
       });
       if (this.state.start === 'none') {
         const getStart = new Date();
@@ -197,17 +207,38 @@ export default class App extends Component {
         weight: this.state.holderWt,
         wow: arr,
         lineData: [{ name: 'Weight', values: weightz }],
+      }, () => {
+        const exData = {
+          start:this.state.start,
+          wow:this.state.wow,
+          user_id:this.state.currentUser,
+          saved:this.state.saved,
+        };
+        AjaxFunctions.postExercise(exData, this.state.currentToken);
       });
-      const exData = {
-        start:this.state.start,
-        wow:this.state.wow,
-        user_id:this.state.currentUser,
-        saved:this.state.saved,
-      };
-      AjaxFunctions.postExercise(exData, this.state.currentToken);
     } else {
-      console.log('enter weight to update');
+      this.setState({
+        notification: 'enter weight to update',
+      });
+      setTimeout(() => {
+        this.setState({
+          notification: '',
+        });
+      }, 3000);
     }
+  }
+
+  postIt() {
+    this.setState({
+      currentToken: '',
+      hideComponent: false,
+      hidelogs: true,
+      hideLogin:true,
+      hideSignup:true,
+      displayLogin:false,
+      displaySignup: false,
+    }, () => {
+    });
   }
 
   saveExercise(event) {
@@ -227,14 +258,15 @@ export default class App extends Component {
       newArray.push(newStuff);
       this.setState({
         saved: newArray,
+      }, () => {
+        const exSave = {
+          start:this.state.start,
+          wow:this.state.wow,
+          user_id:this.state.currentUser,
+          saved:this.state.saved,
+        };
+        AjaxFunctions.postExercise(exSave, this.state.currentToken);
       });
-      const exSave = {
-        start:this.state.start,
-        wow:this.state.wow,
-        user_id:this.state.currentUser,
-        saved:this.state.saved,
-      };
-      AjaxFunctions.postExercise(exSave, this.state.currentToken);
     }
   }
 
@@ -278,10 +310,15 @@ export default class App extends Component {
       };
       AjaxFunctions.postExercise(exGraph, this.state.currentToken);
     } else {
-      console.log('enter reps and weight to update graph');
       this.setState({
         lineData: [{ name: exName, values: walphin }],
+        notification: 'enter reps and weight to update graph',
       });
+      setTimeout(() => {
+        this.setState({
+          notification: '',
+        });
+      }, 3000);
     }
   }
 
@@ -295,26 +332,26 @@ export default class App extends Component {
 
 // added from Dan Pease Auth Temp
   trackSignupForm(e) {
-    let fieldsArr = e.target.parentElement.childNodes
+    let fieldsArr = e.target.parentElement.childNodes;
     this.setState({
       signupForm: {
         username: fieldsArr[0].value,
-        password: fieldsArr[1].value
-      }
+        password: fieldsArr[1].value,
+      },
     }, () => {
-    })
+    });
   }
 
 // added from Dan Pease Auth Temp
   trackLoginForm(e) {
-    let fieldsArr = e.target.parentElement.childNodes
+    let fieldsArr = e.target.parentElement.childNodes;
     this.setState({
       loginForm: {
         username: fieldsArr[0].value,
-        password: fieldsArr[1].value
-      }
+        password: fieldsArr[1].value,
+      },
     }, () => {
-    })
+    });
   }
 
 // added from Dan Pease Auth Temp
@@ -326,20 +363,20 @@ export default class App extends Component {
       },
       body: JSON.stringify({
         username: this.state.signupForm.username,
-        password: this.state.signupForm.password
-      })
+        password: this.state.signupForm.password,
+      }),
     })
     .then((data) => {
       this.setState({
         signupForm: {
           username: '',
           password: '',
-          // hideLogin:true,
-          // hideSignup:true,
-          // displayLogin: false,
-        }
-      })
-    })
+        },
+        displaySignup: false,
+        hideLogin:true,
+        hideSignup:true,
+      });
+    });
   }
 
 // added from Dan Pease Auth Temp
@@ -351,8 +388,8 @@ export default class App extends Component {
       },
       body: JSON.stringify({
         username: this.state.loginForm.username,
-        password: this.state.loginForm.password
-      })
+        password: this.state.loginForm.password,
+      }),
     })
     .then(r => r.json())
     .then((data) => {
@@ -368,8 +405,8 @@ export default class App extends Component {
         notification: '',
       }, () => {
         this.whenLogged();
-      })
-    })
+      });
+    });
 
     if (this.state.currentToken === '') {
       this.setState({
@@ -389,7 +426,7 @@ export default class App extends Component {
       displayLogin:false,
       displaySignup: false,
     }, () => {
-    })
+    });
   }
 
   handleAjaxGetAll() {
@@ -428,6 +465,7 @@ export default class App extends Component {
     this.setState({
       displayLogin: false,
       displaySignup: true,
+      notification: '',
     });
   }
 
@@ -452,7 +490,7 @@ export default class App extends Component {
           <div className="logo"></div>
         </div>
         <h3 className="date">{this.state.date}</h3>
-          <h2>{this.state.notification}</h2>
+          <h2 className="notificationPlace">{this.state.notification}</h2>
         {this.state.hidelogs ? <div className="logs">
           <div className="logBorder">
             <Signup
@@ -478,16 +516,16 @@ export default class App extends Component {
           <Logout
             logout={this.logout.bind(this)}
           />
+          <List
+            lists={this.state.lists}
+            setType={(e) => this.setType(e)}
+          />
           <Form
             updateWt={(e) => this.updateWt(e)}
             enterWt={this.enterWt.bind(this)}
             holderWt={this.state.holderWt}
             weight={this.state.weight}
             placeWt={this.state.placeWt}
-          />
-          <List
-            lists={this.state.lists}
-            setType={(e) => this.setType(e)}
           />
           <main>
             <div className="left">
@@ -525,9 +563,9 @@ export default class App extends Component {
               />
             </div>
           </main>
-          <button onClick={this.click.bind(this)}>TEMP CONSOLE CHECK</button>
         </div> : null}
       </div>
+          // <button onClick={this.click.bind(this)}>TEMP CONSOLE CHECK</button>
     );
   }
 }
