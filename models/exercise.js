@@ -3,8 +3,8 @@ const db = require('./dbConnect');
 module.exports = {
   getExercise(req, res, next) {
     db.any(`
-      SELECT * FROM exercise;
-      `)
+      SELECT * FROM exercise WHERE user_id = $1;
+      `, [req.body.user_id])
       .then((exercise) => {
         res.rows = exercise;
         next();
