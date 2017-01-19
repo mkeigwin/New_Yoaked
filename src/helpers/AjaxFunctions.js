@@ -1,11 +1,22 @@
 export default class AjaxFunctions {
-  static getExercise(token) {
+  static getExercise(token, user) {
+    //////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////
+
+          /* added body.user to the fetch parameter */
+
+    //////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////
+
     return fetch('/exercise', {
       method: 'GET',
       headers: {
         'content-type': 'application/json',
         'Authorization': `Bearer ` + token,
       },
+      body: {
+        user: user,
+      }
     })
     .then(r => r.json());
   }
